@@ -23,37 +23,39 @@ title('modulated signal')
 
  2:  write a program to generate Amplitude Demodulation using MATLAB
 
-am=1;
-ac=1;
-b=10;
-t=(0:0.1*fs)/fs;
-
-wc=2*pi*fc;
-wm=2*pi*fm;
-m= am*cos(wm*t);
-subplot(5,1,1);
-plot(t,m);
-title("Message signal(fm=35hz)");
-grid on;
-
-c_t=ac*cos(wc*t);
-subplot(5,1,2);
-plot(t,c_t);
-title("Carrier signal");
-grid on;
-
-s_t= ac*cos((wc*t) + b*sin(wm*t));
-subplot(5,1,3);
-plot(t,s_t);
-title("Modulated signal");
-grid on;
-
-d=demod(s_t,fc,fs,'fm');
-subplot(5,1,4);
-plot(t,d);
-title("Demodulated signal");
-grid on;
-
+t = 0 : 0.001 : 1;
+fc = 100;
+fm = 10;
+am = 1;
+ac = 1;
+mt = am*sin(2*pi*fm*t);
+subplot(4,1,1);
+plot(t,mt);
+title('message signal ');
+xlabel('time');
+ylabel('amplitude');
+ct = ac*sin(2*pi*fc*t);
+subplot(4,1,2);
+plot(t,ct);
+title('message signal ');
+xlabel('time');
+ylabel('amplitude');
+k = 0.5;
+yt = ac.*(1+k*am.*sin(2*pi*fm*t)).*sin(2*pi*fc*t);
+subplot(4,1,3);
+plot(t,yt);
+title('modulated signal ');
+xlabel('time');
+ylabel('amplitude'); 
+r = yt.*ct;
+[b,a] = butter(4,0.04);
+%[b,a] = butter(n,Wn) returns the transfer function coefficients of an nth-order lowpass digital Butterworth filter with normalized cutoff frequency Wn.
+mr = filter(b,a,r);
+subplot(4,1,4);
+plot(t,mr);
+title('demodulated signal ');
+xlabel('time');
+ylabel('amplitude');
 
 
 3NUM  write a program to generate Frequency Modulation using MATLAB
